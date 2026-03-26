@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mateo Sánchez — ACI Auto Sales</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --navy:#0b1f4b;
+      --blue:#1a56db;
+      --blue2:#2563eb;
+      --sky:#eff6ff;
+      --white:#ffffff;
+      --off:#f8faff;
+      --dark:#0d1117;
+      --gray:#64748b;
+      --lgray:#e2e8f4;
+      --accent:#f97316;
+      --green:#22c55e;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--white);color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+    /* ── LOGO SVG ── */
+    .logo-wrap{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+    .logo-icon{width:38px;height:38px;flex-shrink:0}
+    .logo-text{display:flex;flex-direction:column;line-height:1}
+    .logo-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--navy);letter-spacing:.2px}
+    .logo-sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-top:1px}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--lgray);padding:.9rem 5%}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .lang-toggle{display:flex;border:1.5px solid var(--lgray);border-radius:6px;overflow:hidden}
+    .lang-btn{border:none;background:none;cursor:pointer;font-size:.72rem;font-weight:700;color:var(--gray);padding:.3rem .65rem;font-family:'Plus Jakarta Sans',sans-serif;transition:background .2s,color .2s}
+    .lang-btn.active{background:var(--blue);color:white}
+    .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:.3rem;border:none;background:none}
+    .hamburger span{width:22px;height:2px;background:var(--navy);border-radius:2px;transition:all .3s}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+    /* ── DRAWER MENU ── */
+    .drawer{position:fixed;top:0;right:-100%;width:80%;max-width:300px;height:100vh;background:white;z-index:300;padding:5rem 2rem 2rem;box-shadow:-8px 0 40px rgba(0,0,0,0.12);transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:.3rem}
+    .drawer.open{right:0}
+    .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:250;opacity:0;pointer-events:none;transition:opacity .3s}
+    .drawer-overlay.open{opacity:1;pointer-events:all}
+    .drawer a{display:flex;align-items:center;gap:.8rem;padding:.9rem 1rem;border-radius:10px;text-decoration:none;color:var(--dark);font-weight:600;font-size:1rem;transition:background .2s,color .2s}
+    .drawer a:hover,.drawer a:active{background:var(--sky);color:var(--blue)}
+    .drawer a .d-icon{font-size:1.2rem;width:28px;text-align:center}
+    .drawer-cta{margin-top:auto;display:flex;flex-direction:column;gap:.8rem}
+    .drawer-wa{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--green);color:white;padding:1rem;border-radius:12px;font-weight:700;font-size:1rem;text-decoration:none}
+    .drawer-call{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--sky);color:var(--blue);padding:1rem;border-radius:12px;font-weight:700;font-size:1rem;text-decoration:none}
+
+    /* ── HERO BANNER ── */
+    .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding-top:64px}
+    .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,var(--navy) 0%,#0d2a6b 50%,#1a3a8f 100%)}
+    .hero-deco{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+    .hero-deco::before{content:'';position:absolute;bottom:-20px;right:-5%;width:85%;max-width:500px;height:60%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 280'%3E%3Cg fill='rgba(255,255,255,0.06)'%3E%3Cellipse cx='300' cy='240' rx='280' ry='30'/%3E%3Crect x='60' y='130' width='480' height='110' rx='18'/%3E%3Crect x='110' y='70' width='310' height='100' rx='30'/%3E%3Ccircle cx='140' cy='242' r='45'/%3E%3Ccircle cx='460' cy='242' r='45'/%3E%3Ccircle cx='140' cy='242' r='22' fill='rgba(255,255,255,0.1)'/%3E%3Ccircle cx='460' cy='242' r='22' fill='rgba(255,255,255,0.1)'/%3E%3Crect x='120' y='80' width='130' height='80' rx='12' fill='rgba(100,160,255,0.15)'/%3E%3Crect x='265' y='80' width='140' height='80' rx='12' fill='rgba(100,160,255,0.15)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat}
+    .hero-deco::after{content:'';position:absolute;top:0;left:0;right:0;height:100%;background:radial-gradient(ellipse 70% 50% at 30% 40%,rgba(26,86,219,0.25) 0%,transparent 70%)}
+    .hero-circle1{position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;border:1px solid rgba(255,255,255,0.06)}
+    .hero-circle2{position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;border:1px solid rgba(255,255,255,0.1)}
+
+    .hero-content{position:relative;z-index:5;padding:2.5rem 5% 3rem;max-width:520px}
+    .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);color:white;font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:.4rem .9rem;border-radius:100px;margin-bottom:1.4rem;animation:fadeUp .6s ease both}
+    .live-dot{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:livePulse 1.5s infinite}
+    .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,7vw,3.8rem);font-weight:700;color:white;line-height:1.1;letter-spacing:-0.5px;animation:fadeUp .6s .1s ease both}
+    .hero h1 em{font-style:italic;color:#93c5fd;display:block}
+    .hero-sub{margin-top:1rem;font-size:.95rem;color:rgba(255,255,255,0.72);line-height:1.7;font-weight:400;animation:fadeUp .6s .2s ease both}
+    .hero-btns{margin-top:1.8rem;display:flex;flex-direction:column;gap:.8rem;animation:fadeUp .6s .3s ease both}
+    .btn-wa-hero{display:flex;align-items:center;justify-content:center;gap:.6rem;background:var(--green);color:white;font-weight:700;font-size:1rem;padding:1rem 1.5rem;border-radius:14px;text-decoration:none;box-shadow:0 8px 24px rgba(34,197,94,0.35);transition:transform .2s,box-shadow .2s}
+    .btn-wa-hero:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(34,197,94,.45)}
+    .btn-call-hero{display:flex;align-items:center;justify-content:center;gap:.6rem;background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,0.25);color:white;font-weight:600;font-size:.95rem;padding:.9rem 1.5rem;border-radius:14px;text-decoration:none;transition:background .2s}
+    .btn-call-hero:hover{background:rgba(255,255,255,0.2)}
+    .hero-stats{display:flex;gap:0;margin-top:2rem;animation:fadeUp .6s .4s ease both;border-top:1px solid rgba(255,255,255,0.1);padding-top:1.8rem}
+    .hero-stat{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,0.1)}
+    .hero-stat:last-child{border-right:none}
+    .hs-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:white}
+    .hs-lbl{font-size:.65rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:1.2px;margin-top:.2rem}
+
+    /* ── QUICK ACTIONS ── */
+    .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;padding:1.5rem 5%;background:white;border-bottom:1px solid var(--lgray)}
+    .qa{display:flex;flex-direction:column;align-items:center;gap:.4rem;text-decoration:none;padding:.8rem .3rem;border-radius:12px;background:var(--off);border:1.5px solid var(--lgray);transition:border-color .2s,background .2s;cursor:pointer}
+    .qa:active,.qa:hover{border-color:var(--blue);background:var(--sky)}
+    .qa-icon{font-size:1.5rem}
+    .qa-lbl{font-size:.65rem;font-weight:600;color:var(--dark);text-align:center;line-height:1.2}
+
+    /* ── SECTION SHARED ── */
+    .section{padding:3.5rem 5%}
+    .section.alt{background:var(--off)}
+    .s-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:.5rem}
+    .s-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;line-height:1.15;letter-spacing:-.3px}
+    .s-title span{color:var(--blue)}
+    .s-desc{margin-top:.7rem;color:var(--gray);font-size:.92rem;line-height:1.7}
+
+    /* ── SERVICIOS CARDS ── */
+    .services-list{display:flex;flex-direction:column;gap:1rem;margin-top:2rem}
+    .svc-card{display:flex;align-items:flex-start;gap:1rem;background:white;border:1.5px solid var(--lgray);border-radius:16px;padding:1.3rem;transition:border-color .2s,box-shadow .2s}
+    .svc-card:active,.svc-card:hover{border-color:var(--blue);box-shadow:0 6px 24px rgba(26,86,219,.08)}
+    .svc-card.featured{background:var(--navy);border-color:var(--navy)}
+    .svc-card.featured .svc-name{color:white}
+    .svc-card.featured .svc-desc{color:rgba(255,255,255,.65)}
+    .svc-card.featured .svc-tag{background:rgba(255,255,255,.12);color:white}
+    .svc-icon-wrap{width:48px;height:48px;border-radius:12px;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+    .svc-card.featured .svc-icon-wrap{background:rgba(255,255,255,.12)}
+    .svc-body{flex:1}
+    .svc-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+    .svc-desc{font-size:.85rem;color:var(--gray);line-height:1.6}
+    .svc-tag{display:inline-block;margin-top:.6rem;background:var(--sky);color:var(--blue);font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:.2rem .65rem;border-radius:100px}
+    .svc-arrow{color:var(--blue);font-size:1.2rem;align-self:center;flex-shrink:0}
+    .svc-card.featured .svc-arrow{color:rgba(255,255,255,.5)}
+
+    /* ── SEGUROS ── */
+    .insurance-tabs{display:flex;background:var(--lgray);border-radius:12px;padding:4px;gap:4px;margin-top:1.8rem}
+    .ins-tab{flex:1;padding:.65rem;text-align:center;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--gray);cursor:pointer;border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;transition:background .2s,color .2s}
+    .ins-tab.active{background:white;color:var(--blue);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .ins-panels{margin-top:1.2rem}
+    .ins-panel{display:none;background:white;border:1.5px solid var(--lgray);border-radius:16px;padding:1.5rem}
+    .ins-panel.active{display:block}
+    .ins-panel.popular{border-color:var(--blue)}
+    .ins-popular-badge{display:inline-block;background:var(--accent);color:white;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;margin-bottom:.8rem}
+    .ins-panel-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.4rem}
+    .ins-panel-desc{font-size:.88rem;color:var(--gray);line-height:1.6;margin-bottom:1.2rem}
+    .ins-features{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
+    .ins-features li{display:flex;align-items:center;gap:.7rem;font-size:.88rem}
+    .ins-features li::before{content:'✓';background:var(--sky);color:var(--blue);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0}
+    .ins-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.9rem;background:var(--blue);color:white;border-radius:10px;font-weight:700;font-size:.92rem;text-decoration:none;transition:background .2s}
+    .ins-btn:hover{background:var(--navy)}
+    .ins-panel.popular .ins-btn{background:var(--accent)}
+    .ins-panel.popular .ins-btn:hover{background:#ea6c00}
+
+    /* ── INVENTORY GRID ── */
+    .inv-wrap{margin-top:1.8rem}
+    .inv-toolbar{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:1.2rem}
+    .inv-meta{font-size:.85rem;color:var(--gray)}
+    .inv-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+    .inv-btn{border:1.5px solid var(--lgray);background:white;color:var(--navy);padding:.7rem .9rem;border-radius:12px;font-weight:800;font-size:.82rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:transform .15s,border-color .2s,background .2s}
+    .inv-btn:hover{border-color:var(--blue);background:var(--sky)}
+    .inv-btn.primary{background:var(--blue);border-color:var(--blue);color:white}
+    .inv-btn.primary:hover{background:var(--navy);border-color:var(--navy)}
+    .inv-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1.2rem}
+    .car-card{background:white;border:1.5px solid var(--lgray);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,border-color .2s,transform .2s}
+    .car-card:hover{border-color:var(--blue);box-shadow:0 10px 28px rgba(26,86,219,.12);transform:translateY(-2px)}
+    .car-media{aspect-ratio:16/10;background:linear-gradient(135deg,#dbeafe,#bfdbfe);position:relative}
+    .car-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .car-badges{position:absolute;left:12px;top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .badge{background:rgba(255,255,255,.9);border:1px solid rgba(226,232,244,.9);backdrop-filter:blur(10px);border-radius:999px;padding:.28rem .6rem;font-weight:900;font-size:.68rem;color:var(--navy);letter-spacing:.3px}
+    .badge.price{background:rgba(34,197,94,.92);border-color:rgba(34,197,94,.92);color:white}
+    .car-body{padding:1rem 1rem 1.1rem}
+    .car-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;line-height:1.2;color:var(--dark)}
+    .car-sub{margin-top:.35rem;color:var(--gray);font-size:.85rem;line-height:1.5}
+    .car-kv{margin-top:.8rem;display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+    .kv{background:var(--off);border:1px solid var(--lgray);border-radius:12px;padding:.65rem .7rem}
+    .kv .k{font-size:.65rem;color:var(--gray);font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+    .kv .v{margin-top:.12rem;font-size:.86rem;font-weight:800;color:var(--navy)}
+    .car-ctas{margin-top:1rem;display:flex;gap:.6rem}
+    .car-ctas a{flex:1;display:flex;align-items:center;justify-content:center;gap:.45rem;text-decoration:none;padding:.75rem;border-radius:12px;font-weight:900;font-size:.82rem}
+    .btn-details{background:var(--sky);color:var(--blue);border:1.5px solid var(--lgray)}
+    .btn-wa{background:var(--green);color:white}
+    .inv-empty{margin-top:1rem;background:var(--off);border:1.5px dashed var(--lgray);border-radius:16px;padding:1.2rem;color:var(--gray);font-weight:700}
+
+    /* ── REGISTRO / CONTACTO / FOOTER / FLOATING WA / ANIMATIONS ── */
+    .reg-card{background:var(--navy);border-radius:20px;padding:2rem;margin-top:2rem;position:relative;overflow:hidden}
+    .reg-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04)}
+    .reg-states{display:flex;gap:.8rem;margin-bottom:1.5rem}
+    .reg-state{flex:1;background:rgba(255,255,255,.08);border-radius:12px;padding:1rem;text-align:center}
+    .rs-flag{font-size:1.8rem}
+    .rs-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:white}
+    .rs-full{font-size:.68rem;color:rgba(255,255,255,.5);letter-spacing:.5px}
+    .reg-steps{display:flex;flex-direction:column;gap:.9rem}
+    .reg-step{display:flex;align-items:flex-start;gap:.9rem}
+    .rs-num{width:30px;height:30px;border-radius:50%;background:var(--blue2);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+    .rs-text strong{display:block;color:white;font-size:.9rem;margin-bottom:.15rem}
+    .rs-text span{font-size:.8rem;color:rgba(255,255,255,.55)}
+    .reg-cta{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-top:1.5rem;background:var(--green);color:white;padding:1rem;border-radius:12px;font-weight:700;text-decoration:none;font-size:.95rem}
+
+    .contact-card{background:white;border:1.5px solid var(--lgray);border-radius:20px;padding:1.8rem;margin-top:2rem}
+    .contact-agent{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--lgray)}
+    .agent-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;color:white;font-family:'Playfair Display',serif;font-weight:700}
+    .agent-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700}
+    .agent-role{font-size:.75rem;color:var(--gray);margin-top:.1rem}
+    .contact-info-list{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem}
+    .ci-item{display:flex;align-items:center;gap:.9rem}
+    .ci-icon{width:38px;height:38px;background:var(--sky);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .ci-label{font-size:.7rem;color:var(--gray);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+    .ci-val{font-size:.95rem;font-weight:600}
+    .ci-val a{color:var(--blue);text-decoration:none}
+    .contact-btns{display:flex;flex-direction:column;gap:.8rem}
+    .cta-wa{display:flex;align-items:center;justify-content:center;gap:.6rem;background:var(--green);color:white;padding:1rem;border-radius:12px;font-weight:700;text-decoration:none;font-size:.95rem;box-shadow:0 4px 16px rgba(34,197,94,.25)}
+    .cta-call{display:flex;align-items:center;justify-content:center;gap:.6rem;background:var(--sky);color:var(--navy);padding:1rem;border-radius:12px;font-weight:700;text-decoration:none;font-size:.95rem}
+
+    .form-wrap{background:var(--off);border-radius:16px;padding:1.5rem;margin-top:1.2rem}
+    .form-wrap h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:1.2rem}
+    .fg{margin-bottom:1rem}
+    .fg label{display:block;font-size:.75rem;font-weight:600;color:var(--dark);margin-bottom:.35rem;letter-spacing:.3px}
+    .fg input,.fg select,.fg textarea{width:100%;padding:.8rem 1rem;border:1px solid var(--lgray);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;color:var(--dark);background:white;outline:none;transition:border-color .2s;-webkit-appearance:none}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
+    .fg textarea{height:90px;resize:none}
+    .form-submit{width:100%;padding:.95rem;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s}
+    .form-submit:active{background:var(--navy)}
+    .form-success{display:none;text-align:center;padding:2rem 1rem}
+    .form-success .ok-icon{font-size:3rem}
+    .form-success p{font-weight:600;color:var(--blue);margin-top:.8rem;font-size:.95rem}
+
+    footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:2rem 5%}
+    .foot-logo{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:.8rem}
+    .foot-logo .logo-name,.foot-logo .logo-sub{color:white}
+    .foot-logo .logo-sub{color:rgba(255,255,255,.5)}
+    footer p{font-size:.78rem;line-height:1.7}
+    .foot-links{display:flex;justify-content:center;gap:1.5rem;margin:1rem 0}
+    .foot-links a{color:rgba(255,255,255,.5);font-size:.8rem;text-decoration:none}
+
+    .wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--green);color:white;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;box-shadow:0 6px 20px rgba(34,197,94,.4);animation:float 2.5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4)}70%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(min-width:768px){
+      .hero-content{max-width:600px}
+      .hero-btns{flex-direction:row}
+      .services-list{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+      .quick-actions{grid-template-columns:repeat(4,1fr)}
+      .inv-grid{grid-template-columns:repeat(2,1fr)}
+      .contact-card{max-width:520px}
+    }
+    @media(min-width:1024px){
+      nav{padding:.9rem 8%}
+      .section{padding:4.5rem 8%}
+      .quick-actions{padding:1.5rem 8%}
+      .services-list{grid-template-columns:repeat(4,1fr)}
+      .inv-grid{grid-template-columns:repeat(3,1fr)}
+      .reg-card{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+      .reg-cta{grid-column:span 2}
+      .hero-btns{flex-direction:row}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING WA -->
+  <a class="wa-float" href="https://wa.me/19084147784" target="_blank" aria-label="WhatsApp">💬</a>
+
+  <!-- DRAWER OVERLAY -->
+  <div class="drawer-overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <!-- DRAWER MENU -->
+  <div class="drawer" id="drawer">
+    <a href="#servicios" onclick="closeMenu()"><span class="d-icon">🚗</span><span class="t" data-key="nav_services">Servicios</span></a>
+    <a href="#seguros" onclick="closeMenu()"><span class="d-icon">🛡️</span><span class="t" data-key="nav_insurance">Seguros</span></a>
+    <a href="#galeria" onclick="closeMenu()"><span class="d-icon">🖼️</span><span class="t" data-key="nav_gallery">Galería</span></a>
+    <a href="#registro" onclick="closeMenu()"><span class="d-icon">📋</span><span class="t" data-key="nav_reg">Registro</span></a>
+    <a href="#contacto" onclick="closeMenu()"><span class="d-icon">💬</span><span class="t" data-key="nav_contact">Contacto</span></a>
+    <div class="drawer-cta">
+      <a class="drawer-wa" href="https://wa.me/19084147784" target="_blank">💬 WhatsApp</a>
+      <a class="drawer-call" href="tel:+19084147784">📞 (908) 414-7784</a>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="logo-wrap" href="#">
+        <svg class="logo-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="38" height="38" rx="10" fill="#0b1f4b"/>
+          <rect x="5" y="21" width="28" height="10" rx="3" fill="#1a56db"/>
+          <path d="M10 21 L13 14 L25 14 L28 21Z" fill="#2563eb"/>
+          <rect x="14" y="15.5" width="4.5" height="4.5" rx="1.5" fill="#93c5fd" opacity=".9"/>
+          <rect x="19.5" y="15.5" width="4.5" height="4.5" rx="1.5" fill="#93c5fd" opacity=".9"/>
+          <circle cx="12" cy="31" r="3.5" fill="#0b1f4b" stroke="#93c5fd" stroke-width="1.5"/>
+          <circle cx="26" cy="31" r="3.5" fill="#0b1f4b" stroke="#93c5fd" stroke-width="1.5"/>
+          <rect x="28" y="23" width="3" height="2" rx="1" fill="#fde68a"/>
+          <rect x="7" y="23" width="3" height="2" rx="1" fill="#f97316"/>
+        </svg>
+        <div class="logo-text">
+          <span class="logo-name">Mateo Sánchez</span>
+          <span class="logo-sub">ACI Auto Sales</span>
+        </div>
+      </a>
+      <div class="nav-right">
+        <div class="lang-toggle">
+          <button class="lang-btn active" onclick="setLang('es')">ES</button>
+          <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-deco">
+      <div class="hero-circle1"></div>
+      <div class="hero-circle2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="live-dot"></span><span class="t" data-key="hero_badge">Servicio disponible en NJ &amp; NY</span></div>
+      <h1>
+        <span class="t" data-key="hero_h1a">Tu próximo auto</span><br>
+        <em class="t" data-key="hero_h1b">te está esperando</em>
+      </h1>
+      <p class="hero-sub t" data-key="hero_sub">Venta de autos, seguros, registro y financiamiento. Todo en un solo lugar, sin complicaciones.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/19084147784" class="btn-wa-hero" target="_blank">💬 <span class="t" data-key="hero_wa">Escríbenos ahora</span></a>
+        <a href="tel:+19084147784" class="btn-call-hero">📞 <span class="t" data-key="hero_call">(908) 414-7784</span></a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hs-num">500+</div><div class="hs-lbl t" data-key="stat1">Autos vendidos</div></div>
+        <div class="hero-stat"><div class="hs-num">NJ·NY</div><div class="hs-lbl t" data-key="stat2">Cobertura</div></div>
+        <div class="hero-stat"><div class="hs-num">100%</div><div class="hs-lbl t" data-key="stat3">Financiamiento</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions">
+    <a class="qa" href="#galeria"><div class="qa-icon">🚗</div><div class="qa-lbl t" data-key="qa1">Ver Autos</div></a>
+    <a class="qa" href="#seguros"><div class="qa-icon">🛡️</div><div class="qa-lbl t" data-key="qa2">Seguros</div></a>
+    <a class="qa" href="#registro"><div class="qa-icon">📋</div><div class="qa-lbl t" data-key="qa3">Registro</div></a>
+    <a class="qa" href="#contacto"><div class="qa-icon">💬</div><div class="qa-lbl t" data-key="qa4">Contacto</div></a>
+  </div>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="section">
+    <div class="reveal">
+      <div class="s-eyebrow t" data-key="srv_eye">LO QUE OFRECEMOS</div>
+      <h2 class="s-title"><span class="t" data-key="srv_t1">Servicios</span> <span><span class="t" data-key="srv_t2">completos</span></span> <span class="t" data-key="srv_t3">para ti</span></h2>
+      <p class="s-desc t" data-key="srv_desc">Todo lo que necesitas para tu auto en un solo lugar.</p>
+    </div>
+    <div class="services-list">
+      <div class="svc-card featured reveal">
+        <div class="svc-icon-wrap">🚗</div>
+        <div class="svc-body">
+          <div class="svc-name t" data-key="svc1_n">Venta de Autos</div>
+          <div class="svc-desc t" data-key="svc1_d">Autos de todos los precios con financiamiento disponible.</div>
+          <span class="svc-tag t" data-key="svc1_tag">Todos los precios</span>
+        </div>
+        <span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">🛡️</div>
+        <div class="svc-body">
+          <div class="svc-name t" data-key="svc2_n">Seguros de Auto</div>
+          <div class="svc-desc t" data-key="svc2_d">Básico, Liability y Full Cover. Los mejores precios garantizados.</div>
+          <span class="svc-tag t" data-key="svc2_tag">Más solicitado</span>
+        </div>
+        <span class="svc-arrow" style="color:var(--blue)">›</span>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">📋</div>
+        <div class="svc-body">
+          <div class="svc-name t" data-key="svc3_n">Registro NJ &amp; NY</div>
+          <div class="svc-desc t" data-key="svc3_d">Sin visitas al DMV. Lo hacemos todo por ti.</div>
+        </div>
+        <span class="svc-arrow" style="color:var(--blue)">›</span>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-icon-wrap">💳</div>
+        <div class="svc-body">
+          <div class="svc-name t" data-key="svc4_n">Financiamiento</div>
+          <div class="svc-desc t" data-key="svc4_d">Aprobación rápida. Todos los créditos bienvenidos.</div>
+        </div>
+        <span class="svc-arrow" style="color:var(--blue)">›</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGUROS -->
+  <section id="seguros" class="section alt">
+    <div class="reveal">
+      <div class="s-eyebrow t" data-key="ins_eye">PLANES DE SEGURO</div>
+      <h2 class="s-title"><span class="t" data-key="ins_t1">El seguro</span> <span><span class="t" data-key="ins_t2">perfecto</span></span> <span class="t" data-key="ins_t3">para ti</span></h2>
+      <p class="s-desc t" data-key="ins_desc">Trabajamos con las mejores compañías del país.</p>
+    </div>
+    <div class="insurance-tabs reveal">
+      <button class="ins-tab active" onclick="showTab('basico',this)"><span class="t" data-key="tab1">Básico</span></button>
+      <button class="ins-tab" onclick="showTab('liability',this)">Liability</button>
+      <button class="ins-tab" onclick="showTab('full',this)">Full Cover</button>
+    </div>
+    <div class="ins-panels reveal">
+      <div class="ins-panel active" id="tab-basico">
+        <div class="ins-panel-name t" data-key="ins1_n">Básico</div>
+        <div class="ins-panel-desc t" data-key="ins1_d">Cobertura esencial para cumplir con los requisitos mínimos del estado.</div>
+        <ul class="ins-features">
+          <li class="t" data-key="ins1_f1">Cumple requisitos legales</li>
+          <li class="t" data-key="ins1_f2">Precio más accesible</li>
+          <li class="t" data-key="ins1_f3">Múltiples compañías disponibles</li>
+        </ul>
+        <a href="https://wa.me/19084147784" class="ins-btn" target="_blank"><span class="t" data-key="ins_cta">💬 Cotizar ahora</span></a>
+      </div>
+      <div class="ins-panel popular" id="tab-liability">
+        <div class="ins-popular-badge t" data-key="ins_pop">MÁS POPULAR</div>
+        <div class="ins-panel-name">Liability</div>
+        <div class="ins-panel-desc t" data-key="ins2_d">El balance perfecto entre cobertura y precio. El más elegido.</div>
+        <ul class="ins-features">
+          <li class="t" data-key="ins2_f1">Daños a terceros cubiertos</li>
+          <li class="t" data-key="ins2_f2">Gastos médicos de terceros</li>
+          <li class="t" data-key="ins2_f3">Mejor relación costo-beneficio</li>
+        </ul>
+        <a href="https://wa.me/19084147784" class="ins-btn" target="_blank"><span class="t" data-key="ins_cta">💬 Cotizar ahora</span></a>
+      </div>
+      <div class="ins-panel" id="tab-full">
+        <div class="ins-panel-name">Full Cover</div>
+        <div class="ins-panel-desc t" data-key="ins3_d">Protección total. Tu auto cubierto ante cualquier situación.</div>
+        <ul class="ins-features">
+          <li class="t" data-key="ins3_f1">Cobertura total del vehículo</li>
+          <li class="t" data-key="ins3_f2">Robo y vandalismo</li>
+          <li class="t" data-key="ins3_f3">Desastres naturales</li>
+        </ul>
+        <a href="https://wa.me/19084147784" class="ins-btn" target="_blank"><span class="t" data-key="ins_cta">💬 Cotizar ahora</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA + INVENTARIO REAL -->
+  <section id="galeria" class="section">
+    <div class="reveal">
+      <div class="s-eyebrow t" data-key="gal_eye">NUESTROS VEHÍCULOS</div>
+      <h2 class="s-title"><span class="t" data-key="gal_t1">Encuentra tu</span> <span><span class="t" data-key="gal_t2">próximo auto</span></span></h2>
+      <p class="s-desc t" data-key="gal_desc">Aquí se carga el inventario real automáticamente (imágenes, precio, millas, etc.).</p>
+    </div>
+
+    <div class="inv-wrap reveal">
+      <div class="inv-toolbar">
+        <div class="inv-meta" id="invMeta">Cargando inventario…</div>
+        <div class="inv-actions">
+          <button class="inv-btn" onclick="loadInventory()">Recargar</button>
+          <a class="inv-btn primary" id="csvLink" href="#" target="_blank" rel="noreferrer">Descargar CSV</a>
+        </div>
+      </div>
+
+      <div class="inv-grid" id="inventoryGrid"></div>
+      <div class="inv-empty" id="invEmpty" style="display:none">
+        No pude cargar el inventario. Si usas Render gratis, espera ~1 min y pulsa Recargar. En local, corre el API en el puerto 8000.
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTRO -->
+  <section id="registro" class="section alt">
+    <div class="reveal">
+      <div class="s-eyebrow t" data-key="reg_eye">SIN COMPLICACIONES</div>
+      <h2 class="s-title"><span class="t" data-key="reg_t">Registro en NJ &amp; NY</span></h2>
+      <p class="s-desc t" data-key="reg_desc">Sin filas, sin visitas al DMV. Lo hacemos por ti.</p>
+    </div>
+    <div class="reg-card reveal">
+      <div class="reg-states">
+        <div class="reg-state"><div class="rs-flag">🗽</div><div class="rs-name">NJ</div><div class="rs-full">New Jersey</div></div>
+        <div class="reg-state"><div class="rs-flag">🏙️</div><div class="rs-name">NY</div><div class="rs-full">New York</div></div>
+      </div>
+      <div class="reg-steps">
+        <div class="reg-step"><div class="rs-num">1</div><div class="rs-text"><strong class="t" data-key="rs1_t">Contáctanos</strong><span class="t" data-key="rs1_d">Envíanos tus documentos por WhatsApp.</span></div></div>
+        <div class="reg-step"><div class="rs-num">2</div><div class="rs-text"><strong class="t" data-key="rs2_t">Lo procesamos</strong><span class="t" data-key="rs2_d">Nuestro equipo gestiona todo por ti.</span></div></div>
+        <div class="reg-step"><div class="rs-num">3</div><div class="rs-text"><strong class="t" data-key="rs3_t">¡Listo!</strong><span class="t" data-key="rs3_d">Recibes tus placas sin complicaciones.</span></div></div>
+      </div>
+      <a href="https://wa.me/19084147784" class="reg-cta" target="_blank">💬 <span class="t" data-key="reg_cta">Iniciar mi registro</span></a>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="section">
+    <div class="reveal">
+      <div class="s-eyebrow t" data-key="con_eye">HABLEMOS</div>
+      <h2 class="s-title"><span class="t" data-key="con_t">Estamos aquí <span>para ti</span></span></h2>
+    </div>
+    <div class="contact-card reveal">
+      <div class="contact-agent">
+        <div class="agent-avatar">MS</div>
+        <div>
+          <div class="agent-name">Andres Mateo Sánchez Villa</div>
+          <div class="agent-role t" data-key="agent_role">Agente — ACI Auto Sales</div>
+        </div>
+      </div>
+      <div class="contact-info-list">
+        <div class="ci-item"><div class="ci-icon">📞</div><div><div class="ci-label t" data-key="ci_phone">Teléfono</div><div class="ci-val"><a href="tel:+19084147784">(908) 414-7784</a></div></div></div>
+        <div class="ci-item"><div class="ci-icon">📍</div><div><div class="ci-label t" data-key="ci_area">Área</div><div class="ci-val">New Jersey &amp; New York</div></div></div>
+        <div class="ci-item"><div class="ci-icon">🕐</div><div><div class="ci-label t" data-key="ci_hrs">Horario</div><div class="ci-val t" data-key="ci_hrs_val">Lun–Sáb: 9am – 7pm</div></div></div>
+      </div>
+      <div class="contact-btns">
+        <a href="https://wa.me/19084147784" class="cta-wa" target="_blank">💬 <span class="t" data-key="cta_wa">Escribir por WhatsApp</span></a>
+        <a href="tel:+19084147784" class="cta-call">📞 <span class="t" data-key="cta_call">Llamar ahora</span></a>
+      </div>
+    </div>
+
+    <div class="form-wrap reveal">
+      <h3 class="t" data-key="form_t">Envíanos un mensaje</h3>
+      <div id="formEl">
+        <div class="fg"><label class="t" data-key="f_name">Tu nombre</label><input type="text" id="fname" placeholder="Ej: Juan García"></div>
+        <div class="fg"><label class="t" data-key="f_phone">Teléfono</label><input type="tel" id="fphone" placeholder="(908) 000-0000"></div>
+        <div class="fg">
+          <label class="t" data-key="f_svc">¿En qué te ayudamos?</label>
+          <select id="fservice">
+            <option value="" class="t" data-key="f_sel">Selecciona...</option>
+            <option class="t" data-key="f_o1">Comprar un auto</option>
+            <option class="t" data-key="f_o2">Seguro de auto</option>
+            <option class="t" data-key="f_o3">Registro NJ / NY</option>
+            <option class="t" data-key="f_o4">Financiamiento</option>
+            <option class="t" data-key="f_o5">Otro</option>
+          </select>
+        </div>
+        <div class="fg"><label class="t" data-key="f_msg">Mensaje</label><textarea id="fmsg" placeholder="Cuéntanos más..."></textarea></div>
+        <button class="form-submit" onclick="sendForm()"><span class="t" data-key="f_btn">Enviar mensaje →</span></button>
+      </div>
+      <div class="form-success" id="formOk">
+        <div class="ok-icon">✅</div>
+        <p class="t" data-key="f_ok">¡Listo! Te contactamos pronto por WhatsApp.</p>
+        <a href="https://wa.me/19084147784" class="cta-wa" style="display:inline-flex;margin-top:1rem" target="_blank">💬 WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-logo">
+      <svg width="32" height="32" viewBox="0 0 38 38" fill="none"><rect width="38" height="38" rx="10" fill="#1a56db"/><rect x="5" y="21" width="28" height="10" rx="3" fill="#2563eb"/><path d="M10 21 L13 14 L25 14 L28 21Z" fill="#3b82f6"/><rect x="14" y="15.5" width="4.5" height="4.5" rx="1.5" fill="#bfdbfe" opacity=".9"/><rect x="19.5" y="15.5" width="4.5" height="4.5" rx="1.5" fill="#bfdbfe" opacity=".9"/><circle cx="12" cy="31" r="3.5" fill="#1e3a8a" stroke="#93c5fd" stroke-width="1.5"/><circle cx="26" cy="31" r="3.5" fill="#1e3a8a" stroke="#93c5fd" stroke-width="1.5"/></svg>
+      <div class="logo-text"><span class="logo-name" style="color:white">Mateo Sánchez</span><span class="logo-sub">ACI Auto Sales</span></div>
+    </div>
+    <p>New Jersey &amp; New York · (908) 414-7784</p>
+    <div class="foot-links">
+      <a href="#servicios" class="t" data-key="nav_services">Servicios</a>
+      <a href="#seguros" class="t" data-key="nav_insurance">Seguros</a>
+      <a href="#galeria" class="t" data-key="nav_gallery">Galería</a>
+      <a href="#contacto" class="t" data-key="nav_contact">Contacto</a>
+    </div>
+    <p style="font-size:.72rem;opacity:.4" class="t" data-key="footer">© 2024 ACI Auto Sales. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    // ── TRANSLATIONS ──
+    const T={
+      es:{
+        nav_services:'Servicios',nav_insurance:'Seguros',nav_gallery:'Galería',nav_reg:'Registro',nav_contact:'Contacto',
+        hero_badge:'Servicio disponible en NJ & NY',hero_h1a:'Tu próximo auto',hero_h1b:'te está esperando',
+        hero_sub:'Venta de autos, seguros, registro y financiamiento. Todo en un solo lugar, sin complicaciones.',
+        hero_wa:'Escríbenos ahora',hero_call:'(908) 414-7784',
+        stat1:'Autos vendidos',stat2:'Cobertura',stat3:'Financiamiento',
+        qa1:'Ver Autos',qa2:'Seguros',qa3:'Registro',qa4:'Contacto',
+        srv_eye:'LO QUE OFRECEMOS',srv_t1:'Servicios',srv_t2:'completos',srv_t3:'para ti',srv_desc:'Todo lo que necesitas para tu auto en un solo lugar.',
+        svc1_n:'Venta de Autos',svc1_d:'Autos de todos los precios con financiamiento disponible.',svc1_tag:'Todos los precios',
+        svc2_n:'Seguros de Auto',svc2_d:'Básico, Liability y Full Cover. Los mejores precios garantizados.',svc2_tag:'Más solicitado',
+        svc3_n:'Registro NJ & NY',svc3_d:'Sin visitas al DMV. Lo hacemos todo por ti.',
+        svc4_n:'Financiamiento',svc4_d:'Aprobación rápida. Todos los créditos bienvenidos.',
+        ins_eye:'PLANES DE SEGURO',ins_t1:'El seguro',ins_t2:'perfecto',ins_t3:'para ti',ins_desc:'Trabajamos con las mejores compañías del país.',
+        tab1:'Básico',ins_pop:'MÁS POPULAR',ins_cta:'💬 Cotizar ahora',
+        ins1_n:'Básico',ins1_d:'Cobertura esencial para cumplir con los requisitos mínimos del estado.',
+        ins1_f1:'Cumple requisitos legales',ins1_f2:'Precio más accesible',ins1_f3:'Múltiples compañías disponibles',
+        ins2_d:'El balance perfecto entre cobertura y precio. El más elegido.',
+        ins2_f1:'Daños a terceros cubiertos',ins2_f2:'Gastos médicos de terceros',ins2_f3:'Mejor relación costo-beneficio',
+        ins3_d:'Protección total. Tu auto cubierto ante cualquier situación.',
+        ins3_f1:'Cobertura total del vehículo',ins3_f2:'Robo y vandalismo',ins3_f3:'Desastres naturales',
+        gal_eye:'NUESTROS VEHÍCULOS',gal_t1:'Encuentra tu',gal_t2:'próximo auto',gal_desc:'Aquí se carga el inventario real automáticamente (imágenes, precio, millas, etc.).',
+        reg_eye:'SIN COMPLICACIONES',reg_t:'Registro en NJ & NY',reg_desc:'Sin filas, sin visitas al DMV. Lo hacemos por ti.',
+        rs1_t:'Contáctanos',rs1_d:'Envíanos tus documentos por WhatsApp.',
+        rs2_t:'Lo procesamos',rs2_d:'Nuestro equipo gestiona todo por ti.',
+        rs3_t:'¡Listo!',rs3_d:'Recibes tus placas sin complicaciones.',reg_cta:'Iniciar mi registro',
+        con_eye:'HABLEMOS',con_t:'Estamos aquí <span>para ti</span>',
+        agent_role:'Agente — ACI Auto Sales',ci_phone:'Teléfono',ci_area:'Área',ci_hrs:'Horario',ci_hrs_val:'Lun–Sáb: 9am – 7pm',
+        cta_wa:'Escribir por WhatsApp',cta_call:'Llamar ahora',
+        form_t:'Envíanos un mensaje',f_name:'Tu nombre',f_phone:'Teléfono',f_svc:'¿En qué te ayudamos?',
+        f_sel:'Selecciona...',f_o1:'Comprar un auto',f_o2:'Seguro de auto',f_o3:'Registro NJ / NY',f_o4:'Financiamiento',f_o5:'Otro',
+        f_msg:'Mensaje',f_btn:'Enviar mensaje →',f_ok:'¡Listo! Te contactamos pronto por WhatsApp.',
+        footer:'© 2024 ACI Auto Sales. Todos los derechos reservados.',
+        alert:'Por favor ingresa tu nombre y teléfono.'
+      },
+      en:{
+        nav_services:'Services',nav_insurance:'Insurance',nav_gallery:'Inventory',nav_reg:'Registration',nav_contact:'Contact',
+        hero_badge:'Service available in NJ & NY',hero_h1a:'Your next car',hero_h1b:'is waiting for you',
+        hero_sub:'Car sales, insurance, registration and financing. All in one place, hassle-free.',
+        hero_wa:'Message us now',hero_call:'(908) 414-7784',
+        stat1:'Cars sold',stat2:'Coverage',stat3:'Financing',
+        qa1:'See cars',qa2:'Insurance',qa3:'Registration',qa4:'Contact',
+        srv_eye:'WHAT WE OFFER',srv_t1:'Complete',srv_t2:'services',srv_t3:'for you',srv_desc:'Everything you need for your car in one place.',
+        svc1_n:'Car Sales',svc1_d:'Cars at all price ranges with financing available.',svc1_tag:'All prices',
+        svc2_n:'Auto Insurance',svc2_d:'Basic, Liability and Full Cover. Best prices guaranteed.',svc2_tag:'Most requested',
+        svc3_n:'Registration NJ & NY',svc3_d:'No DMV visits needed. We handle everything for you.',
+        svc4_n:'Financing',svc4_d:'Quick approval. All credit types welcome.',
+        ins_eye:'INSURANCE PLANS',ins_t1:'The',ins_t2:'perfect',ins_t3:'insurance for you',ins_desc:'We work with the best companies in the country.',
+        tab1:'Basic',ins_pop:'MOST POPULAR',ins_cta:'💬 Get a quote',
+        ins1_n:'Basic',ins1_d:'Essential coverage to meet minimum state requirements.',
+        ins1_f1:'Meets legal requirements',ins1_f2:'Most affordable price',ins1_f3:'Multiple companies available',
+        ins2_d:'The perfect balance between coverage and price. The most chosen.',
+        ins2_f1:'Third-party damage covered',ins2_f2:'Third-party medical expenses',ins2_f3:'Best cost-benefit ratio',
+        ins3_d:'Full protection. Your car covered in any situation.',
+        ins3_f1:'Full vehicle coverage',ins3_f2:'Theft and vandalism',ins3_f3:'Natural disasters',
+        gal_eye:'OUR VEHICLES',gal_t1:'Find your',gal_t2:'next car',gal_desc:'This section loads the real inventory automatically (images, price, miles, etc.).',
+        reg_eye:'HASSLE-FREE',reg_t:'Registration in NJ & NY',reg_desc:'No lines, no DMV visits. We do it for you.',
+        rs1_t:'Contact us',rs1_d:'Send us your documents via WhatsApp.',
+        rs2_t:'We process it',rs2_d:'Our team handles everything for you.',
+        rs3_t:'Done!',rs3_d:'You receive your plates hassle-free.',reg_cta:'Start my registration',
+        con_eye:"LET'S TALK",con_t:'We\'re here <span>for you</span>',
+        agent_role:'Agent — ACI Auto Sales',ci_phone:'Phone',ci_area:'Area',ci_hrs:'Hours',ci_hrs_val:'Mon–Sat: 9am – 7pm',
+        cta_wa:'Message on WhatsApp',cta_call:'Call now',
+        form_t:'Send us a message',f_name:'Your name',f_phone:'Phone',f_svc:'How can we help?',
+        f_sel:'Select...',f_o1:'Buy a car',f_o2:'Auto insurance',f_o3:'Registration NJ / NY',f_o4:'Financing',f_o5:'Other',
+        f_msg:'Message',f_btn:'Send message →',f_ok:"Done! We'll contact you soon on WhatsApp.",
+        footer:'© 2024 ACI Auto Sales. All rights reserved.',
+        alert:'Please enter your name and phone number.'
+      }
+    };
+
+    let lang='es';
+    function setLang(l){
+      lang=l;
+      document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&l==='es')||(i===1&&l==='en')));
+      document.querySelectorAll('.t[data-key]').forEach(el=>{
+        const v=T[l][el.dataset.key];
+        if(v!==undefined) el.innerHTML=v;
+      });
+    }
+
+    // ── MENU ──
+    function toggleMenu(){
+      const open=document.getElementById('drawer').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('open',open);
+      document.getElementById('hamburger').classList.toggle('open',open);
+      document.body.style.overflow=open?'hidden':'';
+    }
+    function closeMenu(){
+      document.getElementById('drawer').classList.remove('open');
+      document.getElementById('overlay').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow='';
+    }
+
+    // ── INSURANCE TABS ──
+    function showTab(id,btn){
+      document.querySelectorAll('.ins-panel').forEach(p=>p.classList.remove('active'));
+      document.querySelectorAll('.ins-tab').forEach(b=>b.classList.remove('active'));
+      document.getElementById('tab-'+id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // ── SCROLL REVEAL ──
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:0.08});
+    document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+    // ── INVENTORY (from API) ──
+    // Cambia esta URL si tu API en Render tiene otro nombre de host.
+    const PRODUCTION_API_BASE = "https://render-4yu7.onrender.com";
+    // Priority:
+    // 1) ?api=https://...
+    // 2) localStorage INVENTORY_API_BASE
+    // 3) si abres desde localhost → API local; si no → PRODUCTION_API_BASE (Vercel, etc.)
+    function getApiBase(){
+      const params = new URLSearchParams(window.location.search);
+      const fromQuery = params.get("api");
+      if(fromQuery && /^https?:\/\//i.test(fromQuery)) return fromQuery.replace(/\/+$/,'');
+      const fromStorage = (localStorage.getItem("INVENTORY_API_BASE") || "").trim();
+      if(fromStorage && /^https?:\/\//i.test(fromStorage)) return fromStorage.replace(/\/+$/,'');
+      const host = window.location.hostname || "";
+      if(host === "localhost" || host === "127.0.0.1") return "http://localhost:8000";
+      return PRODUCTION_API_BASE;
+    }
+
+    const API_BASE = getApiBase();
+    const INVENTORY_LIMIT = 20;
+
+    function fmtPrice(p){
+      if(!p) return "";
+      if(p === "$0.00" || p === "$0.00.00") return "";
+      return p;
+    }
+
+    function escapeHtml(s){
+      return String(s||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll("\"","&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function carCard(v){
+      const title = v.title || `${v.Year||""} ${v.Make||""} ${v.Model||""}`.trim();
+      const sub = [v.Trim, v.Type].filter(Boolean).join(" • ");
+      const price = fmtPrice(v.price);
+      const miles = v["Mileage"] || "";
+      const trans = v["Trans"] || "";
+      const drive = v["Drive Train"] || "";
+      const img = v.image || "";
+      const detailsUrl = v.url || "#";
+
+      const waText = encodeURIComponent(`Hola, me interesa este vehículo:\\n${title}\\n${detailsUrl}`);
+      const waUrl = `https://wa.me/19084147784?text=${waText}`;
+
+      return `
+        <article class="car-card">
+          <div class="car-media">
+            ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(title)}" loading="lazy">` : ``}
+            <div class="car-badges">
+              ${price ? `<span class="badge price">${escapeHtml(price)}</span>` : ``}
+              ${v.Year ? `<span class="badge">${escapeHtml(v.Year)}</span>` : ``}
+              ${v["Stock #"] ? `<span class="badge">Stock ${escapeHtml(v["Stock #"])}</span>` : ``}
+            </div>
+          </div>
+          <div class="car-body">
+            <div class="car-title">${escapeHtml(title)}</div>
+            ${sub ? `<div class="car-sub">${escapeHtml(sub)}</div>` : ``}
+            <div class="car-kv">
+              <div class="kv"><div class="k">Millas</div><div class="v">${escapeHtml(miles||"—")}</div></div>
+              <div class="kv"><div class="k">Trans</div><div class="v">${escapeHtml(trans||"—")}</div></div>
+              <div class="kv"><div class="k">Tracción</div><div class="v">${escapeHtml(drive||"—")}</div></div>
+              <div class="kv"><div class="k">VIN</div><div class="v">${escapeHtml((v.Vin||"").slice(-6) ? ("•••"+(v.Vin||"").slice(-6)) : "—")}</div></div>
+            </div>
+            <div class="car-ctas">
+              <a class="btn-details" href="${escapeHtml(detailsUrl)}" target="_blank" rel="noreferrer">🔎 Ver</a>
+              <a class="btn-wa" href="${escapeHtml(waUrl)}" target="_blank" rel="noreferrer">💬 WhatsApp</a>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    async function loadInventory(){
+      const grid = document.getElementById("inventoryGrid");
+      const meta = document.getElementById("invMeta");
+      const empty = document.getElementById("invEmpty");
+      const csvLink = document.getElementById("csvLink");
+
+      empty.style.display = "none";
+      meta.textContent = "Cargando inventario…";
+      grid.innerHTML = "";
+      csvLink.href = `${API_BASE}/inventory.csv?limit=${INVENTORY_LIMIT}`;
+
+      try{
+        const url = `${API_BASE}/inventory?limit=${INVENTORY_LIMIT}`;
+        const res = await fetch(url, { cache: "no-store" });
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        meta.textContent = `Mostrando ${data.length} vehículos (inventario en vivo).`;
+        csvLink.href = `${API_BASE}/inventory.csv?limit=${INVENTORY_LIMIT}`;
+        grid.innerHTML = data.map(carCard).join("");
+        if(!data.length) empty.style.display = "block";
+      }catch(err){
+        meta.textContent = "Inventario no disponible. Pulsa Recargar (Render free puede tardar al despertar).";
+        empty.style.display = "block";
+        empty.textContent = "API usada: " + API_BASE + " — Si falla, abre en otra pestaña " + API_BASE + "/health y espera a que responda.";
+      }
+    }
+
+    // ── FORM ──
+    function sendForm(){
+      const name=document.getElementById('fname').value.trim();
+      const phone=document.getElementById('fphone').value.trim();
+      const svc=document.getElementById('fservice').value;
+      const msg=document.getElementById('fmsg').value.trim();
+      if(!name||!phone){alert(T[lang].alert);return;}
+      const txt=encodeURIComponent(`Hola, soy ${name}.\\nServicio: ${svc||'N/A'}\\nMensaje: ${msg||'N/A'}\\nTel: ${phone}`);
+      window.open(`https://wa.me/19084147784?text=${txt}`,'_blank');
+      document.getElementById('formEl').style.display='none';
+      document.getElementById('formOk').style.display='block';
+    }
+
+    // autoload
+    loadInventory();
+  </script>
+</body>
+</html>
+
